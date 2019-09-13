@@ -1,0 +1,8 @@
+.steps li {
+  margin-bottom: 1.45rem;
+}
+.steps pre {
+  margin-top: 1.45rem;
+  /* border-radius: 0; */
+  border: 1px solid #d85c5c;
+}
