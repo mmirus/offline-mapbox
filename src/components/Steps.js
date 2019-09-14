@@ -18,9 +18,36 @@ export const Steps = () => (
     </li>
     <li>
       Add <code>gatsby-plugin-offline</code> to the list of plugins in{" "}
-      <code>gatsby-config.js</code>:
+      <code>gatsby-config.js</code>, specifying an additional file to be
+      appended to the generated service worker:
       <pre>
-        <code>plugins: [`gatsby-plugin-offline`]</code>
+        <code>{`\
+{
+  resolve: \`gatsby-plugin-offline\`,
+  options: {
+    appendScript: \`src/serviceworker-mapbox.js\`,
+  },
+},\
+        `}</code>
+      </pre>
+    </li>
+    <li>
+      Create <code>src/serviceworker-mapbox.js</code> with the following
+      contents:
+      <pre>
+        <code>{`\
+workbox.routing.registerRoute(
+  /^https?:\/\/(tiles|api)\.mapbox\.com/,
+  new workbox.strategies.NetworkFirst({
+    cacheName: "mapbox-cache",
+    plugins: [
+      new workbox.cacheableResponse.Plugin({
+        statuses: [0, 200],
+      }),
+    ],
+  })
+)\
+      `}</code>
       </pre>
     </li>
     <li>
